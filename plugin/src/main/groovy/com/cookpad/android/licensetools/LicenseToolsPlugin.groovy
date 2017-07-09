@@ -161,6 +161,8 @@ class LicenseToolsPlugin implements Plugin<Project> {
         def noLicenseLibraries = new ArrayList<LibraryInfo>()
         def content = new StringBuilder()
 
+        def normalizedLicensesMap = new HashMap<String, Set<LibraryInfo>>();
+
         librariesYaml.each { libraryInfo ->
             if (libraryInfo.skip) {
                 project.logger.info("generateLicensePage: skip ${libraryInfo.name}")
@@ -169,17 +171,59 @@ class LicenseToolsPlugin implements Plugin<Project> {
 
             // merge dependencyLicenses's libraryInfo into librariesYaml's
             def o = dependencyLicenses.find(libraryInfo.artifactId)
-            if (!libraryInfo.license) {
+            if (!libraryInfo.license || o.isOverride()) {
                 libraryInfo.license = o.license
             }
             libraryInfo.filename = o.filename
             libraryInfo.artifactId = o.artifactId
             libraryInfo.url = o.url.isEmpty() ? libraryInfo.url ?: "" : o.url
+
             try {
-                content.append(Templates.buildLicenseHtml(libraryInfo));
+                Templates.assertLicenseAndStatement(libraryInfo);
             } catch (NotEnoughInformationException e) {
                 noLicenseLibraries.add(e.libraryInfo)
             }
+
+            if (!normalizedLicensesMap.containsKey(libraryInfo.normalizedLicense)) {
+                normalizedLicensesMap.put(libraryInfo.normalizedLicense, new HashSet<LibraryInfo>())
+            }
+            normalizedLicensesMap.get(libraryInfo.normalizedLicense).add(libraryInfo);
+        }
+
+        normalizedLicensesMap.each {
+            normalizedLicenseEntry ->
+                def licenseLibraries = new StringBuilder()
+                licenseLibraries.append("<dl>")
+                normalizedLicenseEntry.value.each {
+                    info ->
+                        licenseLibraries.append("<dt><strong>")
+                                .append(info.libraryName)
+                                .append("</strong></dt>")
+                        info.copyrightStatement.eachLine { line ->
+                            licenseLibraries.append("<dd>")
+                                    .append(line)
+                                    .append("</dd>")
+                        }
+                        if (!info.url.isEmpty()) {
+                            licenseLibraries.append("<dd>")
+                                    .append("<a href=\"").append(info.url).append("\">").append(info.url).append("</a>")
+                            licenseLibraries.append("</dd>")
+                        }
+                }
+                licenseLibraries.append("</dl>")
+                try {
+                    content.append(Templates.buildLicenseHtml(normalizedLicenseEntry.key, licenseLibraries.toString()))
+                } catch (FileNotFoundException e) {
+                    // Keep if we have overrides which could indicate a proprietary library but with open-source attributions
+                    normalizedLicenseEntry.value.each {
+                        libraryInfo ->
+                            if (!libraryInfo.isOverride()) {
+                                throw e
+                            }
+                    }
+                    content.append(Templates.buildProprietaryLicenseHtml(normalizedLicenseEntry.value.getAt(0),
+                            licenseLibraries.toString()))
+                }
         }
 
         assertEmptyLibraries(noLicenseLibraries)

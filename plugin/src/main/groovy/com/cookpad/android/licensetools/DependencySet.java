@@ -64,11 +64,7 @@ public class DependencySet implements Iterable<LibraryInfo> {
     public DependencySet licensesNotMatched(DependencySet librariesYaml) {
         DependencySet notMatched = new DependencySet();
         for (LibraryInfo a : librariesYaml) {
-            if (a.isSkip()) {
-                continue;
-            }
-
-            if (a.getLicense().equals("")) {
+            if (a.isSkip() || a.getLicense().equals("") || a.isOverride()) {
                 continue;
             }
 

@@ -10,12 +10,18 @@ public class Templates {
 
     static final SimpleTemplateEngine templateEngine = new SimpleTemplateEngine()
 
-    public static String buildLicenseHtml(LibraryInfo library) {
-        assertLicenseAndStatement(library)
-
-        def templateFile = "template/licenses/${library.normalizedLicense}.html"
+    public static String buildLicenseHtml(String normalizedLicense, String licenseLibraries) {
+        def templateFile = "template/licenses/${normalizedLicense}.html"
         return templateEngine.createTemplate(readResourceContent(templateFile)).make([
-                "library": library
+                "libraries": licenseLibraries
+        ])
+    }
+
+    public static String buildProprietaryLicenseHtml(LibraryInfo library, String licenseLibraries) {
+        def templateFile = "template/licenses/proprietary.html"
+        return templateEngine.createTemplate(readResourceContent(templateFile)).make([
+                "library": library,
+                "libraries": licenseLibraries
         ])
     }
 
@@ -47,7 +53,7 @@ public class Templates {
         return s.toString()
     }
 
-    static String readResourceContent(String filename) {
+    public static String readResourceContent(String filename) {
         def templateFileUrl = Templates.class.getClassLoader().getResource(filename)
         if (templateFileUrl == null) {
             throw new FileNotFoundException("File not found: $filename")

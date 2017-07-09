@@ -1,0 +1,8 @@
+<div class="library">
+  <!-- Override used for proprietary software with open-source attribution -->
+  <h3>${library.name}</h3>
+  ${libraries}
+  <div class="license">
+    <% print library.licenseUrl.isEmpty() ? "" : """<p><a href="${library.licenseUrl}">${library.licenseUrl}</a></p>""" %>
+  </div>
+</div>
