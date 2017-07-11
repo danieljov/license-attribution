@@ -27,7 +27,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 sourceCompatibility = JavaVersion.VERSION_1_8
 
 final metadata = ext.metadata
-final ARTIFACT_ID = "license-tools-plugin"
+final ARTIFACT_ID = "license-attribution"
 
 // for "plugin:install"
 group = metadata.groupId

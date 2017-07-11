@@ -1,3 +1,4 @@
+Copyright (c) 2017 Jatimi AB
 Copyright (c) 2016 Cookpad Inc.
 
 ---

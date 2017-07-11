@@ -1,4 +1,7 @@
-# Revision History of license-tools-plugin
+# Revision History of license-attribution
+
+## v0.22.0
+- Forked license-tools-plugin and created license-attribution
 
 ## v0.21.0
 - [Support Facebook Platform License](https://github.com/cookpad/license-tools-plugin/issues/40)

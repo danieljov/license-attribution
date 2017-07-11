@@ -1,9 +1,9 @@
 ext {
     metadata = [
-            organization: 'cookpad-inc',
-            groupId     : 'com.cookpad.android.licensetools',
-            website     : 'https://github.com/cookpad/license-tools-plugin',
-            repository  : 'git@github.com:cookpad/license-tools-plugin.git',
+            organization: 'jatimi-ab',
+            groupId     : 'com.jatimi.android.licenseattribution',
+            website     : 'https://github.com/danieljov/license-attribution',
+            repository  : 'git@github.com:danieljov/license-attribution.git',
             licences    : ['Apache-2.0']
     ]
 }

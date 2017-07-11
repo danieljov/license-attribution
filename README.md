@@ -1,4 +1,6 @@
-# Android License Tools Plugin [![CircleCI](https://circleci.com/gh/cookpad/license-tools-plugin.svg?style=svg)](https://circleci.com/gh/cookpad/license-tools-plugin) [ ![Download](https://api.bintray.com/packages/cookpad-inc/maven/license-tools-plugin/images/download.svg) ](https://bintray.com/cookpad-inc/maven/license-tools-plugin/_latestVersion)
+# Android License Attribution Plugin
+
+This is a fork of [Android License Tools Plugin](https://github.com/cookpad/license-tools-plugin)
 
 Gradle Plugin to check library licenses and generate license pages.
 
@@ -17,11 +19,11 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.cookpad.android.licensetools:license-tools-plugin:0.21.1'
+        classpath 'com.jatimi.android.licenseattribution:license-attribution:0.22.0'
     }
 }
 
-apply plugin: 'com.cookpad.android.licensetools'
+apply plugin: 'com.cookpad.android.licenseattribution'
 ```
 
 See [example/build.gradle] for example.
@@ -156,6 +158,7 @@ Keep `CHANGES.md` up-to-date.
 
 ## Copyright and License
 
+Copyright (c) 2017 Jatimi AB
 Copyright (c) 2016 Cookpad Inc.
 
 ```
