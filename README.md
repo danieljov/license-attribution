@@ -19,7 +19,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.jatimi.android.licenseattribution:license-attribution:0.22.0'
+        classpath 'com.jatimi.android.licenseattribution:license-attribution:0.23.0'
     }
 }
 
